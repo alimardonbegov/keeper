@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import Zoom from "@mui/material/Zoom";
+import { connect } from "react-redux";
+import { createNote } from "../redux/actions";
 
 function CreateArea(props) {
   const [note, setNote] = useState({
@@ -22,16 +24,12 @@ function CreateArea(props) {
   }
 
   function submitNote(event) {
-    props.onAdd(note);
+    props.createNote(note);
     setNote({
       title: "",
       content: ""
     });
     event.preventDefault();
-  }
-
-  function handleClickInput() {
-    setIsOnTitle(true);
   }
 
   return (
@@ -55,7 +53,7 @@ function CreateArea(props) {
           value={note.content}
           placeholder="Take a note..."
           rows={isOnTitle ? "3" : "1"}
-          onClick={handleClickInput}
+          onClick={() => setIsOnTitle(true)}
         />
 
         <Zoom in={isOnTitle}>
@@ -68,4 +66,8 @@ function CreateArea(props) {
   );
 }
 
-export default CreateArea;
+const mapDispatchToProps = {
+  createNote
+};
+
+export default connect(null, mapDispatchToProps)(CreateArea);
