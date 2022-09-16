@@ -1,20 +1,22 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-
-import { createStore, applyMiddleware, compose } from "redux";
-import thunk from "redux-thunk";
-import { Provider } from "react-redux";
-
+import { createRoot } from "react-dom/client";
 import App from "./App";
-import { rootReducer } from "./redux/rootReducer";
 
-const store = createStore(rootReducer, compose(applyMiddleware(thunk)));
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import { keeperSlice } from "./redux/keeperSlice";
 
-const app = (
-  <Provider store={store}>
-    <App />
-  </Provider>
+const store = configureStore({
+    reducer: { keeper: keeperSlice.reducer },
+});
+
+const container = document.getElementById("root");
+const root = createRoot(container);
+
+root.render(
+    <React.StrictMode>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </React.StrictMode>
 );
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(app);
